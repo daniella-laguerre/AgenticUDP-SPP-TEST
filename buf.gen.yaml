@@ -1,0 +1,10 @@
+version: v2
+plugins:
+  - local: protoc-gen-go
+    out: entropyops-v2
+    opt:
+      - module=github.com/entropyops/entropyops-v2
+  - local: protoc-gen-go-grpc
+    out: entropyops-v2
+    opt:
+      - module=github.com/entropyops/entropyops-v2

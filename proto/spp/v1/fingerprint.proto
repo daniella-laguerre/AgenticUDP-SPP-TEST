@@ -1,0 +1,71 @@
+// SystemPhysics Protocol v1 — host fingerprint messages.
+// Maps to fingerprint.HostFingerprint in the Go codebase.
+
+syntax = "proto3";
+
+package spp.v1;
+
+option go_package = "github.com/entropyops/entropyops-v2/pkg/sppv1";
+
+import "google/protobuf/timestamp.proto";
+
+message Fingerprint {
+  string                    os                = 1;
+  string                    arch              = 2;
+  string                    kernel            = 3;
+  string                    cloud_provider    = 4;
+  string                    hostname          = 5;
+  string                    container_runtime = 6;
+  string                    platform          = 7;
+  LPARInfo                  lpar_info         = 8;
+  repeated int32            smf_types         = 9;
+  repeated string           active_subsystems = 10;
+  repeated string           mq_managers       = 11;
+  repeated string           industrial_protos = 12;
+  repeated LegacyDetection  legacy_detected   = 13;
+  repeated DetectedSoftware detected_software = 14;
+  repeated DetectedAgent    detected_agents   = 15;
+  repeated int32            open_ports        = 16;
+  repeated ProcessInfo      processes         = 17;
+  string                    fingerprint_id    = 18;
+  google.protobuf.Timestamp collected_at      = 19;
+  int64                     duration_ns       = 20;
+  double                    confidence        = 21;
+}
+
+message LPARInfo {
+  string name       = 1;
+  string type       = 2;
+  string sysplex_id = 3;
+  string cpc_serial = 4;
+}
+
+message LegacyDetection {
+  string              source     = 1;
+  double              confidence = 2;
+  map<string, string> details    = 3;
+}
+
+message DetectedSoftware {
+  string          name              = 1;
+  string          display_name      = 2;
+  string          category          = 3;
+  repeated string matched_processes = 4;
+  repeated int32  matched_ports     = 5;
+  repeated string matched_configs   = 6;
+  double          confidence        = 7;
+  string          layer             = 8;
+  string          collect_strategy  = 9;
+}
+
+message DetectedAgent {
+  string name    = 1;
+  int32  pid     = 2;
+  string cmdline = 3;
+}
+
+message ProcessInfo {
+  int32  pid     = 1;
+  string name    = 2;
+  string cmdline = 3;
+}

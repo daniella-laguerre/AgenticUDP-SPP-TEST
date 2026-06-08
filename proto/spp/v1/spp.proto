@@ -1,0 +1,67 @@
+// SystemPhysics Protocol v1 — top-level envelope and service definition.
+//
+// Every AgenticUDP datagram carrying FLAG_PROTOBUF wraps its payload as an
+// Envelope. The receiver switches on signal_type / oneof to route data.
+
+syntax = "proto3";
+
+package spp.v1;
+
+option go_package = "github.com/entropyops/entropyops-v2/pkg/sppv1";
+
+import "spp/v1/metrics.proto";
+import "spp/v1/traces.proto";
+import "spp/v1/logs.proto";
+import "spp/v1/fingerprint.proto";
+import "spp/v1/config.proto";
+
+enum SignalType {
+  SIGNAL_TYPE_UNSPECIFIED = 0;
+  SIGNAL_TYPE_METRICS     = 1;
+  SIGNAL_TYPE_TRACES      = 2;
+  SIGNAL_TYPE_LOGS        = 3;
+  SIGNAL_TYPE_FINGERPRINT = 4;
+  SIGNAL_TYPE_CONFIG      = 5;
+  SIGNAL_TYPE_COMMAND     = 6;
+}
+
+// Envelope is the top-level wrapper for every protobuf datagram over
+// AgenticUDP. It replaces the JSON {"signal_type","tenant_id","data"}.
+message Envelope {
+  string     tenant_id   = 1;
+  SignalType signal_type = 2;
+
+  oneof payload {
+    MetricBatch  metrics     = 10;
+    TraceBatch   traces      = 11;
+    LogBatch     logs        = 12;
+    Fingerprint  fingerprint = 13;
+    ConfigPush   config      = 14;
+    Command      command     = 15;
+  }
+}
+
+// Command is a server-to-agent directive (restart collector, update config,
+// run diagnostic, etc.). Payload is opaque to the protocol layer.
+message Command {
+  string command_type = 1;
+  bytes  payload      = 2;
+  string request_id   = 3;
+}
+
+// SystemPhysicsService defines the RPC surface. Transport is AgenticUDP, not
+// HTTP/2, so these are logical operations mapped to Envelope signal_types
+// rather than traditional gRPC streams.
+service SystemPhysicsService {
+  rpc PushMetrics    (MetricBatch)  returns (Ack);
+  rpc PushTraces     (TraceBatch)   returns (Ack);
+  rpc PushLogs       (LogBatch)     returns (Ack);
+  rpc ReportFingerprint (Fingerprint) returns (Ack);
+  rpc PushConfig     (ConfigPush)   returns (Ack);
+  rpc SendCommand    (Command)      returns (Ack);
+}
+
+message Ack {
+  bool   ok      = 1;
+  string message = 2;
+}

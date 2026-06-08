@@ -1,0 +1,15 @@
+// SystemPhysics Protocol v1 — server-to-agent configuration push.
+// Used to deliver generated OTEL Collector YAML from Core to the Framework.
+
+syntax = "proto3";
+
+package spp.v1;
+
+option go_package = "github.com/entropyops/entropyops-v2/pkg/sppv1";
+
+message ConfigPush {
+  bytes  otel_yaml = 1;
+  string config_id = 2;
+  string host_id   = 3;
+  string plan_id   = 4;
+}

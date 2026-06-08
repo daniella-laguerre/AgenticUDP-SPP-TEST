@@ -1,0 +1,29 @@
+// SystemPhysics Protocol v1 — trace/span messages.
+// Maps 1:1 to storage.Trace in the Go codebase.
+
+syntax = "proto3";
+
+package spp.v1;
+
+option go_package = "github.com/entropyops/entropyops-v2/pkg/sppv1";
+
+import "google/protobuf/timestamp.proto";
+
+message TraceBatch {
+  repeated Span spans = 1;
+}
+
+message Span {
+  string                    trace_id       = 1;
+  string                    span_id        = 2;
+  string                    parent_span_id = 3;
+  string                    service_name   = 4;
+  string                    operation_name = 5;
+  google.protobuf.Timestamp start_time     = 6;
+  google.protobuf.Timestamp end_time       = 7;
+  int64                     duration_us    = 8;
+  string                    status_code    = 9;
+  string                    span_kind      = 10;
+  map<string, string>       attributes     = 11;
+  string                    tenant_id      = 12;
+}

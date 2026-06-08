@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-04-29T02:21:49Z",
+  "iterations": 20,
+  "results": [
+    {
+      "path": "OTLP HTTP",
+      "status": "PASS",
+      "n": 20,
+      "spans_per_call": 5000,
+      "p50_ms": 558.28,
+      "p90_ms": 856.36,
+      "p99_ms": 963.64,
+      "avg_ms": 594.8,
+      "min_ms": 281.09,
+      "max_ms": 963.64,
+      "ms_per_span_p50": 0.112,
+      "ms_per_span_p99": 0.193,
+      "spans_per_second": 8406.2
+    },
+    {
+      "path": "OTLP gRPC",
+      "status": "PASS",
+      "n": 20,
+      "spans_per_call": 5000,
+      "p50_ms": 1296.54,
+      "p90_ms": 1458.55,
+      "p99_ms": 1477.04,
+      "avg_ms": 1292.66,
+      "min_ms": 993.67,
+      "max_ms": 1477.04,
+      "ms_per_span_p50": 0.259,
+      "ms_per_span_p99": 0.295,
+      "spans_per_second": 3868
+    },
+    {
+      "path": "AgenticUDP",
+      "status": "PASS",
+      "n": 20,
+      "spans_per_call": 5000,
+      "p50_ms": 191.2,
+      "p90_ms": 2476.28,
+      "p99_ms": 2845.23,
+      "avg_ms": 913.52,
+      "min_ms": 170.32,
+      "max_ms": 2845.23,
+      "ms_per_span_p50": 0.038,
+      "ms_per_span_p99": 0.569,
+      "spans_per_second": 5473.3,
+      "note": "sent=7348 acked=7390 retx=42 dropped=0"
+    }
+  ],
+  "spans_per_call": 5000,
+  "tenant": "Trading-dev",
+  "warmup": 2
+}

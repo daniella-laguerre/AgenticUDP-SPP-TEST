@@ -1,0 +1,24 @@
+// SystemPhysics Protocol v1 — metric messages.
+// Maps 1:1 to storage.Metric in the Go codebase.
+
+syntax = "proto3";
+
+package spp.v1;
+
+option go_package = "github.com/entropyops/entropyops-v2/pkg/sppv1";
+
+import "google/protobuf/timestamp.proto";
+
+message MetricBatch {
+  repeated Metric metrics = 1;
+}
+
+message Metric {
+  google.protobuf.Timestamp timestamp    = 1;
+  string                    service_name = 2;
+  string                    metric_name  = 3;
+  string                    metric_type  = 4; // gauge, counter, histogram
+  double                    value        = 5;
+  map<string, string>       labels       = 6;
+  string                    tenant_id    = 7;
+}
